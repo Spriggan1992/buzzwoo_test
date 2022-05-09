@@ -1,0 +1,21 @@
+{
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/*.freezed.dart": true,
+        "**/*.g.dart": true,
+        "**/*.gr.dart": true
+    },
+    "hide-files.files": [],
+    "dart.flutterSdkPath": "/Users/romankozlov/fvm/versions/2.10.3",
+    "dart.sdkPath": "/Users/romankozlov/fvm/versions/2.10.3/bin/cache/dart-sdk",
+    "explorerExclude.backup": null,
+    "cSpell.words": [
+        "dartz",
+        "Sembast"
+    ],
+}

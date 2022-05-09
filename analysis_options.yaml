@@ -1,0 +1,94 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  errors:
+    invalid_annotation_target: ignore
+    invalid_use_of_protected_member: error
+    missing_required_param: error
+    missing_return: error
+    must_be_immutable: error
+    must_call_super: error
+    parameter_assignments: error
+    sort_unnamed_constructors_first: ignore
+  plugins:
+    - dart_code_metrics
+  exclude:
+    - lib/*.config.dart
+    - lib/**/app_icons.dart
+
+dart_code_metrics:
+  anti-patterns:
+    - long-method
+    - long-parameter-list
+  metrics:
+    cyclomatic-complexity: 20
+    lines-of-executable-code: 50
+    number-of-parameters: 8
+    maximum-nesting-level: 5
+    number-of-methods: 10
+    source-lines-of-code: 100
+    weight-of-class: 0.33
+  metrics-exclude:
+    - test/**
+    - lib/injection.dart
+    - lib/*.config.dart
+    - lib/**/*.g.dart
+    - lib/**/*.gr.dart
+    - lib/**/*.freezed.dart
+    - lib/**/app_icons.dart
+  rules:
+    # Common rules
+    - avoid-nested-conditional-expressions:
+        acceptable-level: 2
+    - avoid-unused-parameters
+    - binary-expression-operand-order
+    - double-literal-format
+    - member-ordering-extended:
+        alphabetize: false
+        order:
+          - public-static-fields
+          - private-static-fields
+          - public-static-methods
+          - private-static-methods
+          - public-static-getters
+          - private-static-getters
+          - public-static-setters
+          - private-static-setters
+          - constructors
+          - public-methods
+          - private-methods
+    - newline-before-return
+    - no-boolean-literal-compare
+    - no-empty-block
+    - no-equal-then-else
+    - no-object-declaration
+    - prefer-conditional-expressions
+    - prefer-first
+    - prefer-last
+    - prefer-match-file-name:
+        exclude:
+          - test/**
+          - lib/**/domain/**
+          - lib/**/application/**
+          - lib/**/infrastructure/**
+          - lib/features/core/presentation/routes/**
+          - lib/features/core/presentation/themes/**
+    - prefer-trailing-comma
+    # Flutter rules
+    - always-remove-listener
+    - avoid-returning-widgets
+    - avoid-unnecessary-setstate
+    - avoid-wrapping-in-padding
+    - prefer-const-border-radius
+    - prefer-extracting-callbacks
+    - prefer-single-widget-per-file:
+        ignore-private-widgets: true
+
+linter:
+  rules:
+    always_put_required_named_parameters_first: true
+    avoid_function_literals_in_foreach_calls: false
+    omit_local_variable_types: true
+    prefer_relative_imports: true
+    prefer_single_quotes: true
+    sort_pub_dependencies: true

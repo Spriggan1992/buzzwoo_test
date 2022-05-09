@@ -1,0 +1,20 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+/// Represent screen of loading progress indicator.
+class LoadingScreen extends StatelessWidget {
+  const LoadingScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Align(
+        child: Platform.isIOS
+            ? const CupertinoActivityIndicator()
+            : const CircularProgressIndicator(),
+      ),
+    );
+  }
+}
