@@ -19,8 +19,11 @@ class CountryMap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return latLng == null
-        ? const SvgIcon(
-            asset: AppIcons.earh,
+        ? const Padding(
+            padding: EdgeInsets.only(top: 30),
+            child: SvgIcon(
+              asset: AppIcons.earth,
+            ),
           )
         : FlutterMap(
             options: MapOptions(

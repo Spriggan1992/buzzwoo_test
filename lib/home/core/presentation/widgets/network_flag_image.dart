@@ -88,12 +88,6 @@ class _FlagContainer extends StatelessWidget {
                   ).image,
             fit: BoxFit.cover,
           ),
-          // image: imageProvider != null
-          //     ? DecorationImage(
-          //         image: imageProvider!,
-          //         fit: BoxFit.cover,
-          //       )
-          //     : null,
         ),
       ),
     );

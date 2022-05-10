@@ -2,6 +2,6 @@
 class AppIcons {
   static const String _iconsFilePath = 'assets/icons';
 
-  static const String earh = '$_iconsFilePath/earth.svg';
+  static const String earth = '$_iconsFilePath/earth.svg';
   static const String pirate_flag = '$_iconsFilePath/pirate_flag.png';
 }

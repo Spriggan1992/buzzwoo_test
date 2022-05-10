@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
+import '../../../home/core/domain/exceptions/local_storage_exception.dart';
 import '../../domain/failure.dart';
 import '../extensions/dio_extensions.dart';
 
@@ -29,8 +30,10 @@ Future<Either<Failure, T>> makeRequest<T>(
 
       return left(const Failure.api());
     }
+  } on LocalStorageException catch (_) {
+    return left(const Failure.api());
   } catch (e) {
-    log(e.toString(), level: 2);
+    log(e.toString());
 
     return left(const Failure.api());
   }

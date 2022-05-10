@@ -1,23 +1,31 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/domain/failure.dart';
 import '../../../core/domain/country.dart';
-import '../../../core/domain/i_local_storage.dart';
+import '../../../core/infrastructure/local_storage/i_local_storage.dart';
+import '../../../favorites/domain/i_favorites_repository.dart';
 import '../../core/loading_state.dart';
 import '../../domain/i_country_repository.dart';
 
 part 'countries_event.dart';
 part 'countries_state.dart';
-part 'countries_actor_bloc.freezed.dart';
+part 'countries_bloc.freezed.dart';
 
 @injectable
 class CountriesBloc extends Bloc<CountriesEvent, CountriesState> {
   final ICountryRepository _countryRepository;
   final ILocalStorage _localStorage;
-  CountriesBloc(this._countryRepository, this._localStorage)
-      : super(CountriesState.initial()) {
+  StreamSubscription? _subscription;
+  final IFavoritesRepository _favoritesRepository;
+  CountriesBloc(
+    this._countryRepository,
+    this._localStorage,
+    this._favoritesRepository,
+  ) : super(CountriesState.initial()) {
     on<CountriesEvent>(
       (event, emit) async {
         await event.map(
@@ -42,7 +50,7 @@ class CountriesBloc extends Bloc<CountriesEvent, CountriesState> {
                 availableToLoad: false,
               ),
             );
-            await Future.delayed(Duration(milliseconds: 2000));
+            await Future.delayed(const Duration(milliseconds: 500));
             final response =
                 await _countryRepository.getCountries(state.page + 1);
             emit(

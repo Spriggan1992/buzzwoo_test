@@ -3,15 +3,15 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../core/domain/country.dart';
-import '../../../core/domain/i_local_storage.dart';
+import '../../domain/i_details_repository.dart';
 
 part 'details_state.dart';
 part 'details_cubit.freezed.dart';
 
 @injectable
 class DetailsCubit extends Cubit<DetailsState> {
-  final ILocalStorage _localStorage;
-  DetailsCubit(this._localStorage) : super(DetailsState.initial());
+  final IDetailsRepository _detailsRepository;
+  DetailsCubit(this._detailsRepository) : super(DetailsState.initial());
 
   void initialized(bool isFavorite) {
     emit(state.copyWith(isFavorite: isFavorite));
@@ -29,12 +29,12 @@ class DetailsCubit extends Cubit<DetailsState> {
   }
 
   Future<void> _addToFavorite(Country country) async {
-    await _localStorage.save(country.copyWith(isFavorite: true));
+    await _detailsRepository.addToFavorite(country.copyWith(isFavorite: true));
     emit(state.copyWith(isFavorite: true));
   }
 
   Future<void> _removeFromFavorites(Country country) async {
-    await _localStorage.delete(country);
+    await _detailsRepository.removeFromFavorites(country);
     emit(state.copyWith(isFavorite: false));
   }
 }

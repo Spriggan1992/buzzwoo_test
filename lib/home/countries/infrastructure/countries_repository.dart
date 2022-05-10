@@ -7,7 +7,7 @@ import '../../../../core/infrastructure/http/api_client.dart';
 import '../../../../core/infrastructure/http/endpoints.dart';
 import '../../../../core/domain/failure.dart';
 import '../../core/domain/country.dart';
-import '../../core/domain/i_local_storage.dart';
+import '../../core/infrastructure/local_storage/i_local_storage.dart';
 import '../../core/infrastructure/dtos/country_dto.dart';
 import '../domain/i_country_repository.dart';
 

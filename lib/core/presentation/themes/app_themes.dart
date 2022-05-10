@@ -11,6 +11,7 @@ final ThemeData appThemeData = ThemeData(
   textSelectionTheme: _getTextSelectionThemeData(),
   fontFamily: ThemeConstants.fontFamilyMontserrat,
   iconTheme: _getIconThemeData(),
+  appBarTheme: _getAppBarTheme(),
 );
 
 IconThemeData _getIconThemeData() {
@@ -20,10 +21,16 @@ IconThemeData _getIconThemeData() {
   );
 }
 
+AppBarTheme _getAppBarTheme() {
+  return const AppBarTheme(
+    backgroundColor: AppColors.white,
+  );
+}
+
 ColorScheme _getColorScheme() {
   return const ColorScheme(
     brightness: Brightness.light,
-    primary: AppColors.white,
+    primary: AppColors.primary,
     onPrimary: AppColors.black,
     secondary: AppColors.primary,
     onSecondary: AppColors.black,

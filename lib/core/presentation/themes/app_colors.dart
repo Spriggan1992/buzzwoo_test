@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 /// Represent the all main colors for the app.
 class AppColors {
-  static const primary = Color(0xFF22355A);
+  static const primary = Colors.blue;
   static const accent = Color(0xFF41874C);
   static const white = Color(0xFFFFFFFF);
   static const black = Color(0xFF454545);

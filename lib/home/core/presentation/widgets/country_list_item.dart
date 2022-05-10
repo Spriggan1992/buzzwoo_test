@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/presentation/themes/app_colors.dart';
 import '../../domain/country.dart';
 import 'network_flag_image.dart';
 
@@ -20,31 +21,43 @@ class CountryListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      onTap: onTap,
-      visualDensity: const VisualDensity(vertical: 4),
-      leading: NetworkFlagImage(country.flagUrl),
-      title: Text(
-        country.name,
-        style: Theme.of(context).textTheme.headline5,
-      ),
-      trailing: SizedBox(
-        width: 60,
-        child: Row(
-          children: [
-            if (country.isFavorite)
-              const Icon(
-                CupertinoIcons.heart_fill,
-                size: 30,
-                color: Colors.red,
+    return Container(
+      height: 75,
+      padding: const EdgeInsets.symmetric(horizontal: 18),
+      child: Material(
+        color: AppColors.white,
+        child: InkWell(
+          onTap: onTap,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              NetworkFlagImage(country.flagUrl, height: 60),
+              SizedBox(
+                width: 130,
+                child: Text(
+                  country.name,
+                  style: Theme.of(context).textTheme.headline5,
+                ),
               ),
-            const Expanded(
-              child: Icon(
-                Icons.arrow_forward_ios,
-                size: 20,
+              Row(
+                children: [
+                  if (country.isFavorite)
+                    const Icon(
+                      CupertinoIcons.heart_fill,
+                      size: 30,
+                      color: Colors.red,
+                    ),
+                  const SizedBox(width: 4),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    size: 16,
+                    color: AppColors.gray2.withOpacity(0.5),
+                  ),
+                ],
               ),
-            ),
-          ],
+              
+            ],
+          ),
         ),
       ),
     );

@@ -8,7 +8,8 @@ import '../../../../core/presentation/themes/app_colors.dart';
 
 import '../../core/domain/country.dart';
 import '../../core/presentation/widgets/error_screens/error_screens/error_screen.dart';
-import '../../core/presentation/widgets/loading_screen.dart';
+import '../../core/presentation/widgets/scaffolds/loading_screen.dart';
+import '../../details/application/cubit/details_cubit.dart';
 import '../application/countries/countries_bloc.dart';
 import 'widgets/pagination_list.dart';
 
@@ -39,6 +40,7 @@ class CountriesScreen extends StatelessWidget {
 }
 
 class _CountriesScreenContent extends StatelessWidget {
+  /// Countries to display.
   final List<Country> countries;
   const _CountriesScreenContent({
     required this.countries,
@@ -47,11 +49,14 @@ class _CountriesScreenContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ignore: newline-before-return
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.only(top: 54, left: 24, right: 24),
+          padding: const EdgeInsets.only(
+            top: 54,
+            left: 24,
+            right: 24,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -71,16 +76,12 @@ class _CountriesScreenContent extends StatelessWidget {
                   ),
                   child: BlocBuilder<CountriesBloc, CountriesState>(
                     builder: (context, state) => PaginationList(
+                      onRefresh: () async => _onRefreshHandler(context),
                       countries: state.countries,
                       availableToLoad: state.availableToLoad,
-                      onNextItemLoaded: () => context
-                          .read<CountriesBloc>()
-                          .add(const CountriesEvent.nextItemsLoaded()),
-                      onItemTap: (country) => context.navigateTo(
-                        CountriesDetailsRouter(
-                          country: country,
-                        ),
-                      ),
+                      onNextItemLoaded: () => _onNextItemLoadedHandler(context),
+                      onItemTap: (country) =>
+                          _onDetailsScreenNavigateHandler(context, country),
                       onRemove: (country) => _removeCountryHandler(
                         context,
                         country,
@@ -107,5 +108,24 @@ class _CountriesScreenContent extends StatelessWidget {
         );
 
     return true;
+  }
+
+  void _onDetailsScreenNavigateHandler(
+    BuildContext context,
+    Country country,
+  ) {
+    context.navigateTo(
+      CountriesDetailsRouter(
+        country: country,
+      ),
+    );
+  }
+
+  void _onNextItemLoadedHandler(BuildContext context) {
+    context.read<CountriesBloc>().add(const CountriesEvent.nextItemsLoaded());
+  }
+
+  void _onRefreshHandler(BuildContext context) {
+    context.read<CountriesBloc>().add(const CountriesEvent.countriesLoaded());
   }
 }

@@ -24,79 +24,78 @@ class DetailsScrollableContent extends StatelessWidget {
       slivers: [
         SliverList(
           delegate: SliverChildBuilderDelegate(
-            ((context, index) => Column(
-                  children: [
-                    SizedBox(
-                      height: size.height * 0.3,
-                      child: Stack(
-                        clipBehavior: Clip.hardEdge,
-                        children: [
-                          CountryMap(
-                            latLng: country.hasLocationData
-                                ? LatLng(
-                                    double.parse(
-                                      country.latitude,
-                                    ),
-                                    double.parse(
-                                      country.longitude,
-                                    ),
-                                  )
-                                : null,
-                          ),
-                          if (country.hasLocationData)
-                            Align(
-                              alignment: const Alignment(0, 1.65),
-                              child: NetworkFlagImage(
-                                country.flagUrl,
-                                height: 90,
-                                width: 120,
-                              ),
-                            ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 8, right: 8),
-                              child: BlocSelector<DetailsCubit, DetailsState,
-                                  bool>(
-                                selector: (state) => state.isFavorite,
-                                builder: (context, isFavorite) {
-                                  return isFavorite
-                                      ? const Icon(
-                                          CupertinoIcons.heart_fill,
-                                          color: Colors.red,
-                                          size: 24,
-                                        )
-                                      : const SizedBox.shrink();
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
+            (context, index) => Column(
+              children: [
+                SizedBox(
+                  height: size.height * 0.3,
+                  child: Stack(
+                    clipBehavior: Clip.hardEdge,
+                    children: [
+                      CountryMap(
+                        latLng: country.hasLocationData
+                            ? LatLng(
+                                double.parse(
+                                  country.latitude,
+                                ),
+                                double.parse(
+                                  country.longitude,
+                                ),
+                              )
+                            : null,
                       ),
-                    ),
-                    const SizedBox(height: 60),
-                    Text(
-                      country.capitalCity,
-                      style: Theme.of(context).textTheme.headline2,
-                    ),
-                    CountryInformationContainer(
-                      'Country code',
-                      country.countryCode,
-                    ),
-                    CountryInformationContainer(
-                      'Capital City',
-                      country.capitalCity,
-                    ),
-                    CountryInformationContainer(
-                      'Region',
-                      country.region.name,
-                    ),
-                    CountryInformationContainer(
-                      'Income level',
-                      country.incomeLevel.value,
-                    ),
-                  ],
-                )),
+                      if (country.hasLocationData)
+                        Align(
+                          alignment: const Alignment(0, 1.65),
+                          child: NetworkFlagImage(
+                            country.flagUrl,
+                            height: 90,
+                            width: 120,
+                          ),
+                        ),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 8, right: 8),
+                          child: BlocSelector<DetailsCubit, DetailsState, bool>(
+                            selector: (state) => state.isFavorite,
+                            builder: (context, isFavorite) {
+                              return isFavorite
+                                  ? const Icon(
+                                      CupertinoIcons.heart_fill,
+                                      color: Colors.red,
+                                      size: 24,
+                                    )
+                                  : const SizedBox.shrink();
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 60),
+                Text(
+                  country.capitalCity,
+                  style: Theme.of(context).textTheme.headline2,
+                ),
+                CountryInformationContainer(
+                  'Country code',
+                  country.countryCode,
+                ),
+                CountryInformationContainer(
+                  'Capital City',
+                  country.capitalCity,
+                ),
+                CountryInformationContainer(
+                  'Region',
+                  country.region.name,
+                ),
+                CountryInformationContainer(
+                  'Income level',
+                  country.incomeLevel.value,
+                ),
+              ],
+            ),
             childCount: 1,
           ),
         ),

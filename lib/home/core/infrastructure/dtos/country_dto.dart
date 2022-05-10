@@ -66,7 +66,5 @@ class CountryDTO with _$CountryDTO {
         capitalCity: capitalCity,
         latitude: latitude,
         longitude: longitude,
-        // latitude: latitude.isEmpty ? _latitude : latitude,
-        // longitude: longitude.isEmpty ? _longitude : longitude,
       );
 }

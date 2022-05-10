@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/presentation/app_texts.dart';
 import '../../../core/domain/country.dart';
 import '../../../core/presentation/widgets/country_list_item.dart';
+import '../../../core/presentation/widgets/wrappers/dismissible_wrapper.dart';
 
 /// Represent list view with pagination.
 class PaginationList extends StatelessWidget {
@@ -21,12 +22,17 @@ class PaginationList extends StatelessWidget {
 
   /// Called when the user removes an item from the list.
   final Function(Country country) onRemove;
+
+  /// Called when user pull to refresh list.
+  final Future<void> Function() onRefresh;
+
   const PaginationList({
     required this.countries,
     required this.availableToLoad,
     required this.onNextItemLoaded,
     required this.onItemTap,
     required this.onRemove,
+    required this.onRefresh,
     Key? key,
   }) : super(key: key);
 
@@ -34,59 +40,39 @@ class PaginationList extends StatelessWidget {
   Widget build(BuildContext context) {
     return NotificationListener<ScrollNotification>(
       onNotification: _onNotificationHandler,
-      child: ListView.separated(
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        itemBuilder: (context, index) {
-          return countries.length == index && !availableToLoad
-              ? Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 24),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text(AppTexts.loading),
-                      CupertinoActivityIndicator(),
-                    ],
-                  ),
-                )
-              : Dismissible(
-                  confirmDismiss: (_) async => onRemove(countries[index]),
-                  key: ValueKey(countries[index].id),
-                  background: Container(color: Colors.red),
-                  secondaryBackground: Container(
-                    color: Colors.red,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: const [
-                            Icon(Icons.delete_outline, color: Colors.white),
-                            Text(
-                              AppTexts.remove,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 10),
-                            ),
-                          ],
-                        ),
+      child: RefreshIndicator(
+        onRefresh: onRefresh,
+        child: ListView.separated(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          itemBuilder: (context, index) {
+            final isShowLoadingIndicator =
+                countries.length == index && !availableToLoad;
+
+            return isShowLoadingIndicator
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 24),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Text(AppTexts.loading),
+                        CupertinoActivityIndicator(),
+                      ],
+                    ),
+                  )
+                : DismissibleWrapper(
+                    country: countries[index],
+                    onRemove: onRemove,
+                    child: CountryListItem(
+                      countries[index],
+                      onTap: () => onItemTap(
+                        countries[index],
                       ),
                     ),
-                  ),
-                  direction: countries[index].isFavorite
-                      ? DismissDirection.endToStart
-                      : DismissDirection.none,
-                  child: CountryListItem(
-                    countries[index],
-                    onTap: () => onItemTap(
-                      countries[index],
-                    ),
-                  ),
-                );
-        },
-        separatorBuilder: (context, index) => const Divider(),
-        itemCount: !availableToLoad ? countries.length + 1 : countries.length,
+                  );
+          },
+          separatorBuilder: (context, index) => const Divider(),
+          itemCount: !availableToLoad ? countries.length + 1 : countries.length,
+        ),
       ),
     );
   }

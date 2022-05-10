@@ -11,7 +11,7 @@ import '../application/cubit/details_cubit.dart';
 import 'widgets/details_scrollable_content.dart';
 import 'widgets/favorite_button.dart';
 
-class DetailsScreen extends StatelessWidget {
+class DetailsScreen extends StatefulWidget {
   final Country country;
   const DetailsScreen(
     this.country, {
@@ -19,52 +19,65 @@ class DetailsScreen extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<DetailsScreen> createState() => _DetailsScreenState();
+}
+
+class _DetailsScreenState extends State<DetailsScreen> {
+  @override
+  void initState() {
+    context.read<DetailsCubit>().initialized(widget.country.isFavorite);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    return BlocProvider(
-      create: (context) =>
-          getIt<DetailsCubit>()..initialized(country.isFavorite),
-      child: SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            leadingWidth: double.infinity,
-            elevation: 0,
-            leading: Padding(
-              padding: const EdgeInsets.only(left: 12),
-              child: GestureDetector(
-                onTap: () => context.popRoute(),
-                child: Row(
-                  children: const [
-                    Icon(Icons.arrow_back_ios),
-                    Text(AppTexts.countries),
-                  ],
-                ),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          leadingWidth: double.infinity,
+          elevation: 0,
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 12),
+            child: GestureDetector(
+              onTap: () => context.popRoute(),
+              child: Row(
+                children: const [
+                  Icon(
+                    Icons.arrow_back_ios,
+                    color: AppColors.primary,
+                  ),
+                  Text(
+                    AppTexts.countries,
+                    style: TextStyle(color: AppColors.primary),
+                  ),
+                ],
               ),
             ),
           ),
-          body: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            color: AppColors.white,
-            child: Column(
-              children: [
-                Expanded(
-                  child: DetailsScrollableContent(
-                    size: size,
-                    country: country,
-                  ),
+        ),
+        body: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          color: AppColors.white,
+          child: Column(
+            children: [
+              Expanded(
+                child: DetailsScrollableContent(
+                  size: size,
+                  country: widget.country,
                 ),
-                BlocBuilder<DetailsCubit, DetailsState>(
-                  builder: (context, state) {
-                    return FavoriteButton(
-                      isFavorite: country.isFavorite,
-                      onTap: (isFavorite) =>
-                          _onButtonTapHandler(context, isFavorite),
-                    );
-                  },
-                ),
-              ],
-            ),
+              ),
+              BlocBuilder<DetailsCubit, DetailsState>(
+                builder: (context, state) {
+                  return FavoriteButton(
+                    isFavorite: widget.country.isFavorite,
+                    onTap: (isFavorite) =>
+                        _onButtonTapHandler(context, isFavorite),
+                  );
+                },
+              ),
+            ],
           ),
         ),
       ),
@@ -74,7 +87,7 @@ class DetailsScreen extends StatelessWidget {
   void _onButtonTapHandler(BuildContext context, bool isFavorite) {
     context
         .read<CountriesBloc>()
-        .add(CountriesEvent.toggleFavorite(country, isFavorite));
-    context.read<DetailsCubit>().toggleFavorite(country, isFavorite);
+        .add(CountriesEvent.toggleFavorite(widget.country, isFavorite));
+    context.read<DetailsCubit>().toggleFavorite(widget.country, isFavorite);
   }
 }
