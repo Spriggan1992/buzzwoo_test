@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/presentation/app_texts.dart';
-import '../../../core/domain/country.dart';
+import '../../../core/domain/models/country.dart';
 import '../../../core/presentation/widgets/country_list_item.dart';
 import '../../../core/presentation/widgets/wrappers/dismissible_wrapper.dart';
 
@@ -43,7 +43,7 @@ class PaginationList extends StatelessWidget {
       child: RefreshIndicator(
         onRefresh: onRefresh,
         child: ListView.separated(
-          padding: const EdgeInsets.symmetric(vertical: 12),
+          padding: countries.length > 6 ? null : EdgeInsets.zero,
           itemBuilder: (context, index) {
             final isShowLoadingIndicator =
                 countries.length == index && !availableToLoad;
@@ -60,14 +60,12 @@ class PaginationList extends StatelessWidget {
                     ),
                   )
                 : DismissibleWrapper(
+                    onTap: () => onItemTap(
+                      countries[index],
+                    ),
                     country: countries[index],
                     onRemove: onRemove,
-                    child: CountryListItem(
-                      countries[index],
-                      onTap: () => onItemTap(
-                        countries[index],
-                      ),
-                    ),
+                    child: CountryListItem(countries[index]),
                   );
           },
           separatorBuilder: (context, index) => const Divider(),

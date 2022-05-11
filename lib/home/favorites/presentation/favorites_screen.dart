@@ -7,17 +7,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/presentation/app_texts.dart';
 import '../../../core/presentation/routes/app_router.gr.dart';
 import '../../../core/presentation/themes/app_colors.dart';
-import '../../core/domain/country.dart';
+import '../../../core/presentation/utils/app_constants.dart';
+import '../../core/domain/models/country.dart';
 import '../../core/presentation/widgets/country_list_item.dart';
 import '../../core/presentation/widgets/error_screens/error_screens/error_screen.dart';
+import '../../core/presentation/widgets/scaffolds/app_scaffold.dart';
 import '../../core/presentation/widgets/scaffolds/loading_screen.dart';
 import '../../core/presentation/widgets/wrappers/dismissible_wrapper.dart';
-import '../../countries/application/countries/countries_bloc.dart';
-import '../../details/application/bloc/details_bloc.dart';
-import '../../details/application/cubit/details_cubit.dart';
-import '../application/favorites/favorites_bloc.dart';
 
-const double _radius = 12;
+import '../application/favorites/favorites_bloc.dart';
 
 class FavoritesScreen extends StatelessWidget {
   const FavoritesScreen({Key? key}) : super(key: key);
@@ -29,80 +27,79 @@ class FavoritesScreen extends StatelessWidget {
         return state.when(
           initial: () => const LoadingScreen(),
           loading: () => const LoadingScreen(),
-          success: (countries) => _CountriesScreenContent(countries: countries),
+          success: (countries) => _FavoritesScreenContent(countries: countries),
           failure: (failure) => ErrorScreen(
             failure: failure,
-            onTryAgain: () {},
+            onTryAgain: () => onTryAgainPressedHandler(context),
           ),
         );
       },
     );
   }
+
+  void onTryAgainPressedHandler(BuildContext context) {
+    context
+        .read<FavoritesBloc>()
+        .add(const FavoritesEvent.favoritesStartedWatch());
+  }
 }
 
-class _CountriesScreenContent extends StatelessWidget {
+class _FavoritesScreenContent extends StatelessWidget {
   final List<Country> countries;
-  const _CountriesScreenContent({
+  const _FavoritesScreenContent({
     required this.countries,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      bottom: false,
-      child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.only(top: 54, left: 24, right: 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                AppTexts.favorites,
-                style: Theme.of(context).textTheme.headline2,
-              ),
-              const SizedBox(height: 12),
-              countries.isEmpty
-                  ? Container(
-                      alignment: Alignment.center,
-                      height: 80,
-                      decoration: const BoxDecoration(
-                        color: AppColors.white,
-                        borderRadius:
-                            BorderRadius.all(Radius.circular(_radius)),
-                      ),
-                      child: const Text('You have not favorite countries.'),
-                    )
-                  : Flexible(
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          color: AppColors.white,
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(_radius)),
-                        ),
-                        child: ListView.separated(
-                          shrinkWrap: true,
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          itemBuilder: (context, index) => DismissibleWrapper(
-                            country: countries[index],
-                            onRemove: (Country country) =>
-                                _onRemoveHandler(context, country),
-                            child: CountryListItem(
-                              countries[index],
-                              onTap: () => _onNavigateToDetailsScreen(
-                                context,
-                                countries[index],
-                              ),
-                            ),
-                          ),
-                          separatorBuilder: (context, index) => const Divider(),
-                          itemCount: countries.length,
-                        ),
-                      ),
-                    ),
-            ],
+    return AppScaffold(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            AppTexts.favorites,
+            style: Theme.of(context).textTheme.headline2,
           ),
-        ),
+          const SizedBox(height: 12),
+          countries.isEmpty
+              ? Container(
+                  alignment: Alignment.center,
+                  height: 80,
+                  decoration: const BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: AppConstants.borderRadius12,
+                  ),
+                  child: const Text(AppTexts.emptyFavoriteCountries),
+                )
+              : Flexible(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 12,
+                    ),
+                    decoration: const BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: AppConstants.borderRadius12,
+                    ),
+                    child: ListView.separated(
+                      padding: countries.length > 6 ? null : EdgeInsets.zero,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) => DismissibleWrapper(
+                        onTap: () => _onNavigateToDetailsScreen(
+                          context,
+                          countries[index],
+                        ),
+                        country: countries[index],
+                        onRemove: (country) =>
+                            _onRemoveHandler(context, country),
+                        child: CountryListItem(countries[index]),
+                      ),
+                      separatorBuilder: (context, index) => const Divider(),
+                      itemCount: countries.length,
+                    ),
+                  ),
+                ),
+        ],
       ),
     );
   }
@@ -115,8 +112,8 @@ class _CountriesScreenContent extends StatelessWidget {
 
   bool _onRemoveHandler(BuildContext context, Country country) {
     context
-        .read<CountriesBloc>()
-        .add(CountriesEvent.toggleFavorite(country, false));
+        .read<FavoritesBloc>()
+        .add(FavoritesEvent.favoriteCountryRemoved(country));
 
     return true;
   }

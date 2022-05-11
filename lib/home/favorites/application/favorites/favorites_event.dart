@@ -6,4 +6,6 @@ class FavoritesEvent with _$FavoritesEvent {
   const factory FavoritesEvent.countriesReceived(
     Either<Failure, List<Country>> countriesOrFailure,
   ) = _CountriesReceived;
+  const factory FavoritesEvent.favoriteCountryRemoved(Country country) =
+      _FavoriteCountryRemoved;
 }

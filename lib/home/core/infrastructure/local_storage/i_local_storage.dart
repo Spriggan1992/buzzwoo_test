@@ -1,8 +1,7 @@
-import '../../domain/country.dart';
+import '../../domain/models/country.dart';
 
+/// Describe local storage.
 abstract class ILocalStorage {
-  Stream<Country> get subscription;
-
   /// Saving item to the local storage.
   ///
   /// Throw [LocalStorageException].
@@ -19,6 +18,4 @@ abstract class ILocalStorage {
   ///
   /// Throw [LocalStorageException].
   Future<List<Country>> readAll();
-
-  Future<void> dispose();
 }

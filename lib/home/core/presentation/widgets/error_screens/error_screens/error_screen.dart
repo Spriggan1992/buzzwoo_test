@@ -6,14 +6,14 @@ import '../base_error_screen.dart';
 
 const _error = 'Try again';
 
-/// Defines screen, that usually showing she get unexpected failure.
+/// Defines screen, that usually showing error.
 class ErrorScreen extends BaseErrorScreen {
   final Failure failure;
 
   /// Error title to display.
   final String errorTitle;
 
-  /// Event handler for clicking the "repeat again" button.
+  /// Call when user tap on 'Again' button.
   final VoidCallback? onTryAgain;
   ErrorScreen({
     required this.failure,

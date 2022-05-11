@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../extension/empty_data.dart';
 
+/// Represent detailed information about country.
 class CountryInformationContainer extends StatelessWidget {
+  /// Title of the country info to display.
   final String title;
+
+  /// Value of the country info to display.
   final String value;
   const CountryInformationContainer(
     this.title,

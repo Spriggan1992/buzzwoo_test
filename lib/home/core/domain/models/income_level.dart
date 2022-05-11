@@ -6,7 +6,7 @@ part 'income_level.freezed.dart';
 class IncomeLevel with _$IncomeLevel {
   const IncomeLevel._();
   const factory IncomeLevel({
-    /// The value of income level.
+    /// Income level value.
     required String value,
   }) = _IncomeLevel;
 

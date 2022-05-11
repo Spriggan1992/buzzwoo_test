@@ -4,17 +4,17 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../../core/presentation/app_icons.dart';
 import '../../../../core/presentation/themes/app_colors.dart';
-
-const _borderRadius = BorderRadius.all(
-  Radius.circular(4),
-);
+import '../../../../core/presentation/utils/app_constants.dart';
 
 /// Represent the widget to display country flag with loaded from internet.
 class NetworkFlagImage extends StatelessWidget {
   /// The url of loading flag.
   final String imageUrl;
 
+  /// The container width.
   final double? width;
+
+  /// The container height.
   final double? height;
 
   const NetworkFlagImage(
@@ -29,7 +29,7 @@ class NetworkFlagImage extends StatelessWidget {
     return CachedNetworkImage(
       imageUrl: imageUrl,
       progressIndicatorBuilder: (context, url, downloadProgress) =>
-          const LoadingFlagContainer(),
+          const _LoadingFlagContainer(),
       errorWidget: (context, url, error) => _FlagContainer(
         height: height,
         width: width,
@@ -43,8 +43,8 @@ class NetworkFlagImage extends StatelessWidget {
   }
 }
 
-class LoadingFlagContainer extends StatelessWidget {
-  const LoadingFlagContainer({Key? key}) : super(key: key);
+class _LoadingFlagContainer extends StatelessWidget {
+  const _LoadingFlagContainer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -71,13 +71,13 @@ class _FlagContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       elevation: 6,
-      borderRadius: _borderRadius,
+      borderRadius: AppConstants.borderRadius4,
       child: Container(
         margin: const EdgeInsets.all(6),
         width: width ?? 90,
         height: height,
         decoration: BoxDecoration(
-          borderRadius: _borderRadius,
+          borderRadius: AppConstants.borderRadius4,
           color: AppColors.gray2,
           image: DecorationImage(
             image: imageProvider != null

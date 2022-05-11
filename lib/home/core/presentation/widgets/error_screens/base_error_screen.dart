@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Defines screen, that usually showing she get unexpected failure.
+/// Base widget for screens error.
 class BaseErrorScreen extends StatelessWidget {
   /// Error title to display.
   final String baseTitle;

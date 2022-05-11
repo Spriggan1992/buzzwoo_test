@@ -11,9 +11,6 @@ class AppColors {
   static const gray5 = Color(0xFFF6F6F6);
   static const gray3 = Color(0xFFE1E1E1);
   static const gray2 = Color(0xFF5F697B);
-  static const stroke = Color(0xFFE1E1E1);
 
   static const bodyTypographyColor = Color(0xFF686C74);
-  static const dropDownColor = Color(0xFFCEDDFB);
-  static const navBarIconColor = Color(0xFF263143);
 }

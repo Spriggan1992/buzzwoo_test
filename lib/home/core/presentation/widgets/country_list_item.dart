@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/presentation/themes/app_colors.dart';
-import '../../domain/country.dart';
+import '../../domain/models/country.dart';
 import 'network_flag_image.dart';
 
 /// Represents the country display list items.
@@ -10,12 +10,8 @@ class CountryListItem extends StatelessWidget {
   /// Country to display.
   final Country country;
 
-  /// Called when the user taps this list item.
-  final VoidCallback onTap;
-
   const CountryListItem(
     this.country, {
-    required this.onTap,
     Key? key,
   }) : super(key: key);
 
@@ -24,40 +20,34 @@ class CountryListItem extends StatelessWidget {
     return Container(
       height: 75,
       padding: const EdgeInsets.symmetric(horizontal: 18),
-      child: Material(
-        color: AppColors.white,
-        child: InkWell(
-          onTap: onTap,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          NetworkFlagImage(country.flagUrl, height: 60),
+          SizedBox(
+            width: 130,
+            child: Text(
+              country.name,
+              style: Theme.of(context).textTheme.headline5,
+            ),
+          ),
+          Row(
             children: [
-              NetworkFlagImage(country.flagUrl, height: 60),
-              SizedBox(
-                width: 130,
-                child: Text(
-                  country.name,
-                  style: Theme.of(context).textTheme.headline5,
+              if (country.isFavorite)
+                const Icon(
+                  CupertinoIcons.heart_fill,
+                  size: 30,
+                  color: Colors.red,
                 ),
-              ),
-              Row(
-                children: [
-                  if (country.isFavorite)
-                    const Icon(
-                      CupertinoIcons.heart_fill,
-                      size: 30,
-                      color: Colors.red,
-                    ),
-                  const SizedBox(width: 4),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    size: 16,
-                    color: AppColors.gray2.withOpacity(0.5),
-                  ),
-                ],
+              const SizedBox(width: 4),
+              Icon(
+                Icons.arrow_forward_ios,
+                size: 16,
+                color: AppColors.gray2.withOpacity(0.5),
               ),
             ],
           ),
-        ),
+        ],
       ),
     );
   }

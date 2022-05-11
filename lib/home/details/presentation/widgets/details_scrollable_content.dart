@@ -3,16 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
 
-import '../../../core/domain/country.dart';
+import '../../../../core/presentation/app_texts.dart';
+import '../../../core/domain/models/country.dart';
 import '../../../core/presentation/widgets/network_flag_image.dart';
 import '../../application/bloc/details_bloc.dart';
 // import '../../application/cubit/details_cubit.dart';
 import 'country_information_container.dart';
 import 'country_map.dart';
 
+/// Represent scrollable content of details screen.
 class DetailsScrollableContent extends StatelessWidget {
+  /// Screen dimensions.
   final Size size;
+
+  /// Country to display.
   final Country country;
+
   const DetailsScrollableContent({
     required this.size,
     required this.country,
@@ -80,19 +86,19 @@ class DetailsScrollableContent extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline2,
                 ),
                 CountryInformationContainer(
-                  'Country code',
+                  AppTexts.countryCode,
                   country.countryCode,
                 ),
                 CountryInformationContainer(
-                  'Capital City',
+                  AppTexts.capitalCity,
                   country.capitalCity,
                 ),
                 CountryInformationContainer(
-                  'Region',
+                  AppTexts.region,
                   country.region.name,
                 ),
                 CountryInformationContainer(
-                  'Income level',
+                  AppTexts.incomeLevel,
                   country.incomeLevel.value,
                 ),
               ],

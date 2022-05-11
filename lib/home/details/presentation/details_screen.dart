@@ -5,13 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/presentation/app_texts.dart';
 import '../../../core/presentation/themes/app_colors.dart';
 import '../../../injection.dart';
-import '../../core/domain/country.dart';
-import '../../countries/application/countries/countries_bloc.dart';
+import '../../core/domain/models/country.dart';
 import '../application/bloc/details_bloc.dart';
 import 'widgets/details_scrollable_content.dart';
 import 'widgets/favorite_button.dart';
 
-class DetailsScreen extends StatelessWidget {
+class DetailsScreen extends StatefulWidget {
   final Country country;
   const DetailsScreen(
     this.country, {
@@ -19,12 +18,22 @@ class DetailsScreen extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<DetailsScreen> createState() => _DetailsScreenState();
+}
+
+class _DetailsScreenState extends State<DetailsScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
     return BlocProvider(
       create: (context) =>
-          getIt<DetailsBloc>()..add(DetailsEvent.initialized(country)),
+          getIt<DetailsBloc>()..add(DetailsEvent.initialized(widget.country)),
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
@@ -57,7 +66,7 @@ class DetailsScreen extends StatelessWidget {
                 Expanded(
                   child: DetailsScrollableContent(
                     size: size,
-                    country: country,
+                    country: widget.country,
                   ),
                 ),
                 BlocBuilder<DetailsBloc, DetailsState>(
@@ -68,6 +77,9 @@ class DetailsScreen extends StatelessWidget {
                     );
                   },
                 ),
+                const SizedBox(
+                  height: 12,
+                ),
               ],
             ),
           ),
@@ -77,10 +89,6 @@ class DetailsScreen extends StatelessWidget {
   }
 
   void _onButtonTapHandler(BuildContext context, Country country) {
-    context
-        .read<CountriesBloc>()
-        .add(CountriesEvent.toggleFavorite(country, country.isFavorite));
-
     context.read<DetailsBloc>().add(DetailsEvent.favoritesToggled(country));
   }
 }

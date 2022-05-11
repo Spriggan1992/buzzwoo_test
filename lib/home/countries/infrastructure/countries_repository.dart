@@ -6,7 +6,8 @@ import 'package:injectable/injectable.dart';
 import '../../../../core/infrastructure/http/api_client.dart';
 import '../../../../core/infrastructure/http/endpoints.dart';
 import '../../../../core/domain/failure.dart';
-import '../../core/domain/country.dart';
+import '../../../core/infrastructure/utils/make_request.dart';
+import '../../core/domain/models/country.dart';
 import '../../core/infrastructure/local_storage/i_local_storage.dart';
 import '../../core/infrastructure/dtos/country_dto.dart';
 import '../domain/i_country_repository.dart';
@@ -28,6 +29,13 @@ class CountryRepository implements ICountryRepository {
 
         return _parseCountries(response.data, favorites);
       },
+    );
+  }
+
+  @override
+  Future<Either<Failure, Unit>> removeFavoriteCountry(Country country) {
+    return makeRequest<Unit>(
+      () async => await _localStorage.delete(country),
     );
   }
 }

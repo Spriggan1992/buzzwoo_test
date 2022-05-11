@@ -50,6 +50,7 @@ class Country with _$Country {
         longitude: '',
       );
 
+  /// Getting url for loading flags.
   String get flagUrl =>
       'https://flagcdn.com/h120/${countryCode.toLowerCase()}.png';
 

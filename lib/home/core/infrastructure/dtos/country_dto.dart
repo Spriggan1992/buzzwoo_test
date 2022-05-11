@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../domain/country.dart';
+import '../../domain/models/country.dart';
 import 'income_level_dto.dart';
 import 'region_dto.dart';
 part 'country_dto.freezed.dart';
@@ -20,23 +20,24 @@ class CountryDTO with _$CountryDTO {
     /// Country name.
     @JsonKey(name: 'name') required String name,
 
-    /// Country name.
+    /// Region of the country.
     @JsonKey(name: 'region') required Map<String, dynamic> region,
 
-    /// Country name.
+    /// Income level of the country.
     @JsonKey(name: 'incomeLevel') required Map<String, dynamic> incomeLevel,
 
-    /// Country name.
+    /// The capital city of the country.
     @JsonKey(name: 'capitalCity') required String capitalCity,
 
-    /// Country name.
+    /// The longitude.
     ///
     @JsonKey(name: 'longitude') required String longitude,
 
-    /// Country name.
+    /// The latitude.
     @JsonKey(name: 'latitude') required String latitude,
   }) = _CountryDTO;
 
+  /// Return converted DTO from domain.
   factory CountryDTO.fromDomain(Country _) => CountryDTO(
         id: _.id,
         countryCode: _.countryCode,

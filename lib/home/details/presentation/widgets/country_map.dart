@@ -8,8 +8,9 @@ import '../../../core/presentation/widgets/icons/svg_icon.dart';
 const _urlTemplate = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const _mapAttribution = 'test_app';
 
+/// Represent country location on the map.
 class CountryMap extends StatelessWidget {
-  /// Coordinates in Degrees
+  /// Coordinates in degrees.
   final LatLng? latLng;
   const CountryMap({
     required this.latLng,

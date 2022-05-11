@@ -5,4 +5,9 @@ class AppTexts {
   static const favorites = 'Favorites';
   static const loading = 'Loading...';
   static const remove = 'Remove';
+  static const emptyFavoriteCountries = 'You have not favorite countries.';
+  static const countryCode = 'Country code';
+  static const capitalCity = 'Capital City';
+  static const region = 'Region';
+  static const incomeLevel = 'Income level';
 }

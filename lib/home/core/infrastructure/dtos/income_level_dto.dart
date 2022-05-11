@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../domain/income_level.dart';
+import '../../domain/models/income_level.dart';
 part 'income_level_dto.freezed.dart';
 part 'income_level_dto.g.dart';
 

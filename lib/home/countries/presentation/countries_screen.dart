@@ -6,14 +6,13 @@ import '../../../../core/presentation/app_texts.dart';
 import '../../../../core/presentation/routes/app_router.gr.dart';
 import '../../../../core/presentation/themes/app_colors.dart';
 
-import '../../core/domain/country.dart';
+import '../../../core/presentation/utils/app_constants.dart';
+import '../../core/domain/models/country.dart';
 import '../../core/presentation/widgets/error_screens/error_screens/error_screen.dart';
+import '../../core/presentation/widgets/scaffolds/app_scaffold.dart';
 import '../../core/presentation/widgets/scaffolds/loading_screen.dart';
-import '../../details/application/cubit/details_cubit.dart';
 import '../application/countries/countries_bloc.dart';
 import 'widgets/pagination_list.dart';
-
-const double _radius = 12;
 
 class CountriesScreen extends StatelessWidget {
   const CountriesScreen({Key? key}) : super(key: key);
@@ -40,7 +39,6 @@ class CountriesScreen extends StatelessWidget {
 }
 
 class _CountriesScreenContent extends StatelessWidget {
-  /// Countries to display.
   final List<Country> countries;
   const _CountriesScreenContent({
     required this.countries,
@@ -49,50 +47,41 @@ class _CountriesScreenContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.only(
-            top: 54,
-            left: 24,
-            right: 24,
+    return AppScaffold(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            AppTexts.countries,
+            style: Theme.of(context).textTheme.headline2,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                AppTexts.countries,
-                style: Theme.of(context).textTheme.headline2,
+          const SizedBox(height: 12),
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                vertical: 12,
               ),
-              const SizedBox(height: 12),
-              Expanded(
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(_radius),
-                      topRight: Radius.circular(_radius),
-                    ),
-                  ),
-                  child: BlocBuilder<CountriesBloc, CountriesState>(
-                    builder: (context, state) => PaginationList(
-                      onRefresh: () async => _onRefreshHandler(context),
-                      countries: state.countries,
-                      availableToLoad: state.availableToLoad,
-                      onNextItemLoaded: () => _onNextItemLoadedHandler(context),
-                      onItemTap: (country) =>
-                          _onDetailsScreenNavigateHandler(context, country),
-                      onRemove: (country) => _removeCountryHandler(
-                        context,
-                        country,
-                      ),
-                    ),
+              decoration: const BoxDecoration(
+                color: AppColors.white,
+                borderRadius: AppConstants.borderRadius12,
+              ),
+              child: BlocBuilder<CountriesBloc, CountriesState>(
+                builder: (context, state) => PaginationList(
+                  onRefresh: () async => _onRefreshHandler(context),
+                  countries: state.countries,
+                  availableToLoad: state.availableToLoad,
+                  onNextItemLoaded: () => _onNextItemLoadedHandler(context),
+                  onItemTap: (country) =>
+                      _onDetailsScreenNavigateHandler(context, country),
+                  onRemove: (country) => _removeCountryHandler(
+                    context,
+                    country,
                   ),
                 ),
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
