@@ -34,7 +34,6 @@ class NetworkFlagImage extends StatelessWidget {
         height: height,
         width: width,
       ),
-      // imageBuilder: (context, imageProvider) => LoadingFlagContainer()
       imageBuilder: (context, imageProvider) => _FlagContainer(
         imageProvider: imageProvider,
         height: height,
@@ -52,7 +51,7 @@ class LoadingFlagContainer extends StatelessWidget {
     return Shimmer.fromColors(
       baseColor: AppColors.gray3,
       highlightColor: AppColors.gray5,
-      child: _FlagContainer(),
+      child: const _FlagContainer(),
     );
   }
 }

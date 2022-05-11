@@ -55,7 +55,6 @@ class CountryListItem extends StatelessWidget {
                   ),
                 ],
               ),
-              
             ],
           ),
         ),

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/presentation/themes/app_colors.dart';
 
-class FavoriteButton extends StatefulWidget {
-  final Function(bool isFavorite) onTap;
+class FavoriteButton extends StatelessWidget {
+  final VoidCallback onTap;
   final bool isFavorite;
   const FavoriteButton({
     required this.onTap,
@@ -13,22 +13,9 @@ class FavoriteButton extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<FavoriteButton> createState() => _FavoriteButtonState();
-}
-
-class _FavoriteButtonState extends State<FavoriteButton> {
-  late bool _isFavorite;
-
-  @override
-  void initState() {
-    _isFavorite = widget.isFavorite;
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: _toggleIsFavorite,
+      onPressed: onTap,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -38,7 +25,7 @@ class _FavoriteButtonState extends State<FavoriteButton> {
             color: AppColors.white,
           ),
           Text(
-            _isFavorite ? 'Remove from favorite' : 'Add to favorite',
+            isFavorite ? 'Remove from favorite' : 'Add to favorite',
             style: Theme.of(context)
                 .textTheme
                 .bodyText1
@@ -68,12 +55,5 @@ class _FavoriteButtonState extends State<FavoriteButton> {
         ),
       ),
     );
-  }
-
-  void _toggleIsFavorite() {
-    setState(() {
-      _isFavorite = !_isFavorite;
-    });
-    widget.onTap(_isFavorite);
   }
 }

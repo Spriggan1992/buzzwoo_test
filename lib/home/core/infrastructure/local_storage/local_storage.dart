@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
@@ -20,6 +21,12 @@ class LocalStorage implements ILocalStorage {
 
   ///Store factory with key as int and value as Map
   final _store = StoreRef.main();
+
+  final StreamController<Country> _controller = StreamController.broadcast();
+
+  /// Subscription for listening signals.
+  @override
+  Stream<Country> get subscription => _controller.stream;
 
   LocalStorage(this._sembastDatabase);
   @override
@@ -50,21 +57,28 @@ class LocalStorage implements ILocalStorage {
     _makeRequest(
       () async {
         await _store.record(country.id).delete(_sembastDatabase.instance);
+
+        _controller.sink.add(country);
       },
     );
+  }
+
+  @override
+  Future<void> dispose() async {
+    _controller.close();
   }
 }
 
 Future<T> _makeRequest<T>(
   CallBackRequest<T> callback,
 ) async {
-  try {
-    final result = await callback();
+  // try {
+  final result = await callback();
 
-    return result;
-  } catch (e) {
-    log(e.toString());
+  return result;
+  // } catch (e) {
+  //   log(e.toString());
 
-    throw LocalStorageException();
-  }
+  //   throw LocalStorageException();
+  // }
 }

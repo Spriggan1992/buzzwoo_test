@@ -3,8 +3,10 @@ part of 'details_bloc.dart';
 @freezed
 class DetailsState with _$DetailsState {
   const factory DetailsState({
-    required bool isFavorite,
+    required Country country,
   }) = _DetailsState;
 
-  factory DetailsState.initial() => const DetailsState(isFavorite: false);
+  factory DetailsState.initial() => DetailsState(
+        country: Country.empty(),
+      );
 }

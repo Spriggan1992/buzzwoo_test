@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import '../../../core/infrastructure/utils/make_request.dart';
 import '../../core/infrastructure/local_storage/i_local_storage.dart';
 import '../domain/i_details_repository.dart';
@@ -12,6 +14,12 @@ class DetailsRepository implements IDetailsRepository {
   final ILocalStorage _localStorage;
 
   DetailsRepository(this._localStorage);
+
+  final StreamController<Country> _controller = StreamController.broadcast();
+
+  /// Subscription for listening signals.
+  @override
+  Stream<Country> get subscription => _controller.stream;
   @override
   Future<Either<Failure, Unit>> addToFavorite(Country country) {
     return makeRequest<Unit>(() async {
@@ -28,5 +36,15 @@ class DetailsRepository implements IDetailsRepository {
 
       return unit;
     });
+  }
+
+  @override
+  Stream<Country> removedCountrySubscription() async* {
+    yield* _localStorage.subscription;
+  }
+
+  @override
+  Future<void> dispose() async {
+    await _localStorage.dispose();
   }
 }

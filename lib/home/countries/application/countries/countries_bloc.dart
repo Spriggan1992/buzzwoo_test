@@ -19,12 +19,9 @@ part 'countries_bloc.freezed.dart';
 class CountriesBloc extends Bloc<CountriesEvent, CountriesState> {
   final ICountryRepository _countryRepository;
   final ILocalStorage _localStorage;
-  StreamSubscription? _subscription;
-  final IFavoritesRepository _favoritesRepository;
   CountriesBloc(
     this._countryRepository,
     this._localStorage,
-    this._favoritesRepository,
   ) : super(CountriesState.initial()) {
     on<CountriesEvent>(
       (event, emit) async {
@@ -68,7 +65,7 @@ class CountriesBloc extends Bloc<CountriesEvent, CountriesState> {
             final updatedCountries = state.countries.map((country) {
               var targetCountry = country;
               if (country.id == e.country.id) {
-                targetCountry = country.copyWith(isFavorite: e.isFavorite);
+                targetCountry = country;
               }
 
               return targetCountry;

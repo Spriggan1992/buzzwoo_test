@@ -5,7 +5,8 @@ import 'package:latlong2/latlong.dart';
 
 import '../../../core/domain/country.dart';
 import '../../../core/presentation/widgets/network_flag_image.dart';
-import '../../application/cubit/details_cubit.dart';
+import '../../application/bloc/details_bloc.dart';
+// import '../../application/cubit/details_cubit.dart';
 import 'country_information_container.dart';
 import 'country_map.dart';
 
@@ -56,8 +57,8 @@ class DetailsScrollableContent extends StatelessWidget {
                         alignment: Alignment.topRight,
                         child: Padding(
                           padding: const EdgeInsets.only(top: 8, right: 8),
-                          child: BlocSelector<DetailsCubit, DetailsState, bool>(
-                            selector: (state) => state.isFavorite,
+                          child: BlocSelector<DetailsBloc, DetailsState, bool>(
+                            selector: (state) => state.country.isFavorite,
                             builder: (context, isFavorite) {
                               return isFavorite
                                   ? const Icon(

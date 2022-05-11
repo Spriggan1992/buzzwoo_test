@@ -50,21 +50,6 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
               ),
             );
           },
-          favoriteCountryRemoved: (e) async {
-            final result =
-                await _favoritesRepository.removeFavoriteCountry(e.country);
-            emit(
-              result.fold(
-                (failure) => FavoritesState.failure(failure),
-                (_) => FavoritesState.success(
-                  state.maybeWhen(
-                    orElse: () => [],
-                    success: (countries) => countries,
-                  ),
-                ),
-              ),
-            );
-          },
         );
       },
     );

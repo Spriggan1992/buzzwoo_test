@@ -38,15 +38,4 @@ class FavoritesRepository implements IFavoritesRepository {
       () async => await _localStorage.readAll(),
     );
   }
-
-  @override
-  Future<Either<Failure, Unit>> removeFavoriteCountry(Country country) {
-    return makeRequest<Unit>(
-      () async {
-        await _localStorage.readAll();
-
-        return unit;
-      },
-    );
-  }
 }
